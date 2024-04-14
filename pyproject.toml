@@ -1,0 +1,101 @@
+[tool.poetry]
+name = "replace-with-repo-name"
+version = "0.1.0"
+description = ""
+authors = ["Your Name <you@example.com>"]
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = "~3.10"
+
+[tool.poetry.group.dev.dependencies]
+pre-commit = "3.7.0"
+# keep in sync with versions in .pre-commit-config.yaml
+pyright = "1.1.357"
+mypy = "1.9.0"
+ruff = "0.3.5"
+# keep in sync with versions in .pre-commit-config.yaml
+pytest = "^8.1.1"
+nox = "^2024.3.2"
+
+[tool.mypy]
+# ignore notebooks
+exclude = ".*_Suff.py"
+
+[[tool.mypy.overrides]]
+module = "replace_with_repo_name.*"
+ignore_missing_imports = true
+
+[tool.pyright]
+# this enables practically every flag given by pyright.
+# there are a couple of flags that are still disabled by
+# default in strict mode as they are experimental and niche.
+typeCheckingMode = "strict"
+pythonVersion = "3.10"
+reportMissingTypeStubs = false
+exclude = [
+    "**/*_Suff.py",
+]
+
+[tool.ruff]
+line-length = 120
+output-format = "grouped"
+target-version = "py310"
+exclude = ["*_Suff.py"]
+lint.select = [
+    # errors
+    "E",
+    # fatal errors
+    "F",
+    # warnings
+    "W",
+    # convention violations
+    "Q",
+    # isort
+    "I",
+    # bugbear rules
+    "B",
+    # remove unused imports
+    "F401",
+    # bare except statements
+    "E722",
+    # unused arguments
+    "ARG",
+    # print statements
+    "T201",
+    "T203",
+    # misuse of typing.TYPE_CHECKING
+    "TCH004",
+]
+fix = true
+
+[tool.ruff.format]
+docstring-code-format = true
+
+[tool.ruff.lint.isort]
+extra-standard-library = ["typing_extensions"]
+combine-as-imports = true
+split-on-trailing-comma = true
+
+[tool.black]
+line-length = 120
+target-version = ['py310']
+include = '\.pyi?$'
+exclude = '''
+/(
+    \.eggs
+  | \.git
+  | \.hg
+  | \.mypy_cache
+  | \.tox
+  | \.venv
+  | _build
+  | buck-out
+  | build
+  | dist
+)/
+'''
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
